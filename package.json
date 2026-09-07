@@ -1,0 +1,10 @@
+{
+  "name": "gestion-catedra",
+  "version": "1.0.0",
+  "description": "Herramientas de gestión de cátedra para Google Apps Script",
+  "scripts": {
+    "test": "node test/unit_tests.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
