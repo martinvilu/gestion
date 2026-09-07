@@ -4,17 +4,19 @@ Este documento detalla 40 mejoras de calidad de vida, robustez operativa, rendim
 
 ---
 
-### 1. Parametrización de usuarios docentes excluidos en GitHub
-* **Evidencia**: [GitHubService.js:L199](file:///home/mrtin/dev/tools/gestion/GitHubService.js#L199) (`const ignoredUsers = ["martinvilu", "mfermindev", ...];`).
+### 1. Parametrización de usuarios docentes excluidos en GitHub (RESUELTO)
+* **Evidencia**: [GitHubService.js:L199](file:///home/mrtin/dev/tools/gestion/GitHubService.js#L199) (`const ignoredUsers = Config.ignoredGitHubUsers;`).
 * **Causa raíz**: Lista rígida de cuentas fijada en código fuente.
 * **Prescripción**: Definir el rango con nombre `GH_IGNORED_USERS` en la hoja `Configuración` y leerlo en [`Config`](file:///home/mrtin/dev/tools/gestion/Config.js).
 * **Punto de control**: Modificar docentes desde la planilla sin alterar archivos `.js`.
+* **Estado**: Implementado. Rango registrado en `Initializer.js`, getter en `Config.js` y filtrado en `GitHubService.dumpPermissions`.
 
-### 2. Nombre de remitente configurable en correos
-* **Evidencia**: [MailService.js:L53](file:///home/mrtin/dev/tools/gestion/MailService.js#L53) (`name: 'Martín René Vilugrón [bot]'`).
+### 2. Nombre de remitente configurable en correos (RESUELTO)
+* **Evidencia**: [MailService.js:L53](file:///home/mrtin/dev/tools/gestion/MailService.js#L53) (`name: Config.mailerSenderName`).
 * **Causa raíz**: Identidad de cátedra codificada en texto fijo dentro del servicio de correos.
 * **Prescripción**: Leer el remitente del rango `MATERIA` o de los parámetros `EMAIL_REMITENTE` y `EMAIL_RESPUESTA` (para `replyTo`).
 * **Punto de control**: Modificar la celda en `Configuración` cambia el encabezado `From` y `Reply-To` del mail enviado.
+* **Estado**: Implementado. Rangos `EMAIL_REMITENTE` y `EMAIL_RESPUESTA` creados en `Initializer.js`, getters en `Config.js` e inyección de remitente y replyTo en `MailService.sendEmails`.
 
 
 ### 3. Unificación del motor de plantillas en MailService

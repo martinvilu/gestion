@@ -57,9 +57,13 @@ const MailService = {
         const emailOptions = {
           to: fila["e-mail"],
           subject: fila["asunto"],
-          name: 'Martín René Vilugrón [bot]',
+          name: Config.mailerSenderName,
           htmlBody: htmlBody,
         };
+        const replyTo = Config.mailerReplyTo;
+        if (replyTo) {
+          emailOptions.replyTo = replyTo;
+        }
 
         MailApp.sendEmail(emailOptions);
 

@@ -15,7 +15,11 @@ const Config = {
     GH_CUTOFF: 'GH_CUTOFF',
     GH_ORG: 'GH_ORG',
     TP_SLUGS: 'TP_SLUGS',
+    GH_IGNORED_USERS: 'GH_IGNORED_USERS',
     MATERIA: 'MATERIA',
+    EMAIL_REMITENTE: 'EMAIL_REMITENTE',
+    EMAIL_RESPUESTA: 'EMAIL_RESPUESTA',
+    MAILER_REMITENTE: 'MAILER_REMITENTE',
     MAILER_DATA: 'MAILER_DATA',
     CUERPO_MAIL: 'CUERPO_MAIL',
     MAILER_LISTO: 'MAILER_LISTO',
@@ -41,6 +45,32 @@ const Config = {
 
   get githubToken() {
     return PropertiesService.getUserProperties().getProperty(this.KEYS.GITHUB_API);
+  },
+
+  get ignoredGitHubUsers() {
+    const val = this.getNamedRangeValue(this.NAMED_RANGES.GH_IGNORED_USERS);
+    if (!val) return [];
+    return String(val)
+      .split(/[\n,]+/)
+      .map(u => u.trim().toLowerCase())
+      .filter(Boolean);
+  },
+
+  get mailerSenderName() {
+    const sender = this.getNamedRangeValue(this.NAMED_RANGES.EMAIL_REMITENTE) || this.getNamedRangeValue(this.NAMED_RANGES.MAILER_REMITENTE);
+    if (sender && String(sender).trim()) {
+      return String(sender).trim();
+    }
+    const materia = this.getNamedRangeValue(this.NAMED_RANGES.MATERIA);
+    if (materia && String(materia).trim()) {
+      return `${String(materia).trim()} [bot]`;
+    }
+    return 'Gestión Cátedra [bot]';
+  },
+
+  get mailerReplyTo() {
+    const replyTo = this.getNamedRangeValue(this.NAMED_RANGES.EMAIL_RESPUESTA);
+    return (replyTo && String(replyTo).trim()) ? String(replyTo).trim() : null;
   },
 
   get supabaseConfig() {

@@ -198,7 +198,7 @@ const GitHubService = {
     const org = Config.getNamedRangeValue(Config.NAMED_RANGES.GH_ORG);
     if (!token || !org) return;
 
-    const ignoredUsers = ["martinvilu", "mfermindev", "miguelmariguin", "inomdedeu", "dteira", "mmariguin-unrn"];
+    const ignoredUsers = Config.ignoredGitHubUsers;
     const githubSheet = SheetUtils.getSheet("github");
     if (githubSheet.getLastRow() <= 1) return;
     const repoData = githubSheet.getRange(2, 1, githubSheet.getLastRow() - 1, githubSheet.getLastColumn()).getValues();
@@ -258,7 +258,7 @@ const GitHubService = {
 
               if (collaborators) {
                 collaborators.edges.forEach(edge => {
-                  if (edge.node && !ignoredUsers.includes(edge.node.login)) {
+                  if (edge.node && !ignoredUsers.includes(edge.node.login.toLowerCase())) {
                     rows.push([item.repoName, item.practicaName, item.repositoryId, edge.node.login, edge.permission]);
                   }
                 });

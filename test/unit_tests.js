@@ -211,7 +211,33 @@ it("_matchSlug retorna null si el repositorio no coincide con ningún prefijo", 
   assert.strictEqual(res, null);
 });
 
-console.log("\n3. Utils.js (SheetUtils & LockUtils)");
+console.log("\n3. Config.js (QoL 1 y 2: Ignored Users & Mailer Sender)");
+
+it("Config.ignoredGitHubUsers parsea listas separadas por coma y convierte a minúsculas", () => {
+  mockNamedRanges["GH_IGNORED_USERS"] = "MartinVilu, Docente2, Ayudante-UNRN\nExtraUser ";
+  const ignored = sandbox.Config.ignoredGitHubUsers;
+  assert.deepEqual(ignored, ["martinvilu", "docente2", "ayudante-unrn", "extrauser"]);
+});
+
+it("Config.ignoredGitHubUsers retorna array vacío si no hay valor", () => {
+  delete mockNamedRanges["GH_IGNORED_USERS"];
+  assert.deepEqual(sandbox.Config.ignoredGitHubUsers, []);
+});
+
+it("Config.mailerSenderName y mailerReplyTo leen parámetros EMAIL_REMITENTE y EMAIL_RESPUESTA", () => {
+  mockNamedRanges["EMAIL_REMITENTE"] = "Algoritmos 2 [Oficial]";
+  mockNamedRanges["EMAIL_RESPUESTA"] = "consultas@catedra.edu.ar";
+  assert.strictEqual(sandbox.Config.mailerSenderName, "Algoritmos 2 [Oficial]");
+  assert.strictEqual(sandbox.Config.mailerReplyTo, "consultas@catedra.edu.ar");
+
+  delete mockNamedRanges["EMAIL_REMITENTE"];
+  delete mockNamedRanges["EMAIL_RESPUESTA"];
+  mockNamedRanges["MATERIA"] = "Taller de Programación";
+  assert.strictEqual(sandbox.Config.mailerSenderName, "Taller de Programación [bot]");
+  assert.strictEqual(sandbox.Config.mailerReplyTo, null);
+});
+
+console.log("\n4. Utils.js (SheetUtils & LockUtils)");
 
 it("SheetUtils.mapRowsToObjects convierte matriz 2D con cabeceras a objetos", () => {
   const data = [
