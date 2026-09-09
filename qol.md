@@ -79,11 +79,6 @@ Este documento detalla 40 mejoras de calidad de vida, robustez operativa, rendim
 * **Prescripción**: Validar que el valor contenga un patrón de URL de repositorio antes de hacer `appendRow`.
 * **Punto de control**: Celdas editadas con texto arbitrario no se transfieren a la hoja de correcciones.
 
-### 13. Ordenamiento alfabético en la hoja `github`
-* **Evidencia**: [GitHubService.js:L161](file:///home/mrtin/dev/tools/gestion/GitHubService.js#L161) persiste los datos en el orden cronológico de la API (`PUSHED_AT`).
-* **Causa raíz**: Volcado directo de la respuesta sin ordenamiento secundario.
-* **Prescripción**: Ordenar `rows` alfabéticamente por columna `practica` y luego por `usuario` antes de escribir.
-* **Punto de control**: La hoja `github` queda organizada por código de TP y estudiante.
 
 ### 14. Retroalimentación visual continua en tareas de sincronización
 * **Evidencia**: [`GitHubService.fetchRepos`](file:///home/mrtin/dev/tools/gestion/GitHubService.js#L9-L78) no informa la cantidad procesada a medida que avanza entre páginas.
